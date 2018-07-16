@@ -1,4 +1,4 @@
-FROM cookielab/alpine:3.7.0
+FROM cookielab/alpine:3.8.0
 
 RUN apk --update --no-cache add nodejs --repository http://dl-cdn.alpinelinux.org/alpine/edge/main
 
