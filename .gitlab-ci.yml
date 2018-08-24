@@ -4,30 +4,20 @@ stages:
 
 build-server:
   stage: first
-  image: docker:latest
-  services:
-    - docker:dind
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   variables:
     DOCKER_IMAGE: cookielab/nodejs
     DOCKER_IMAGE_VERSION_REVISION: $CI_COMMIT_TAG
   before_script:
-    - docker login --username clbbot --password "$DOCKER_HUB_PASSWORD"
+    - mkdir -p /root/.docker
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"clbbot\",\"password\":\"$DOCKER_HUB_PASSWORD\"}}}" > /root/.docker/config.json
   script:
-    - docker build --no-cache --pull -t $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION -f server/Dockerfile .
     - export DOCKER_IMAGE_VERSION_PATCH=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2.\3/p'`
-    - docker tag $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH
     - export DOCKER_IMAGE_VERSION_MINOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2/p'`
-    - docker tag $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR
     - export DOCKER_IMAGE_VERSION_MAJOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1/p'`
-    - docker tag $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR
-    - echo "Pushing $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION"
-    - docker push $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION
-    - echo "Pushing $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH"
-    - docker push $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH
-    - echo "Pushing $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR"
-    - docker push $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR
-    - echo "Pushing $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR"
-    - docker push $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR
   tags:
     - docker
   only:
@@ -35,30 +25,20 @@ build-server:
 
 build:
   stage: second
-  image: docker:latest
-  services:
-    - docker:dind
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   variables:
     DOCKER_IMAGE: cookielab/nodejs
     DOCKER_IMAGE_VERSION_REVISION: $CI_COMMIT_TAG
   before_script:
-    - docker login --username clbbot --password "$DOCKER_HUB_PASSWORD"
+    - mkdir -p /root/.docker
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"clbbot\",\"password\":\"$DOCKER_HUB_PASSWORD\"}}}" > /root/.docker/config.json
   script:
-    - docker build --no-cache --pull -t $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION .
     - export DOCKER_IMAGE_VERSION_PATCH=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2.\3/p'`
-    - docker tag $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_PATCH
     - export DOCKER_IMAGE_VERSION_MINOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2/p'`
-    - docker tag $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MINOR
     - export DOCKER_IMAGE_VERSION_MAJOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1/p'`
-    - docker tag $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MAJOR
-    - echo "Pushing $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION"
-    - docker push $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION
-    - echo "Pushing $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_PATCH"
-    - docker push $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_PATCH
-    - echo "Pushing $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MINOR"
-    - docker push $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MINOR
-    - echo "Pushing $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MAJOR"
-    - docker push $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MAJOR
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_REVISION --destination $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_PATCH --destination $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MINOR --destination $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION_MAJOR
   tags:
     - docker
   only:
