@@ -17,7 +17,7 @@ build-server:
     - export DOCKER_IMAGE_VERSION_PATCH=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2.\3/p'`
     - export DOCKER_IMAGE_VERSION_MINOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2/p'`
     - export DOCKER_IMAGE_VERSION_MAJOR=`echo -n $DOCKER_IMAGE_VERSION_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1/p'`
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/server/Dockerfile --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_REVISION --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_PATCH --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MINOR --destination $DOCKER_IMAGE:server-$DOCKER_IMAGE_VERSION_MAJOR
   tags:
     - docker
   only:
