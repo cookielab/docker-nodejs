@@ -1,4 +1,4 @@
-FROM cookielab/nodejs:build-10.14.0
+FROM cookielab/nodejs:build-10.14.1
 
 RUN apk --update --no-cache add fftw-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/main && \
     apk --update --no-cache add lcms2-dev libpng-dev udev && \
