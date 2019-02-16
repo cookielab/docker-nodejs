@@ -5,7 +5,7 @@ stages:
 
 .build_template: &build_definition
   image:
-    name: gcr.io/kaniko-project/executor:debug-v0.6.0
+    name: gcr.io/kaniko-project/executor:debug-v0.9.0
     entrypoint: [""]
   before_script:
     - mkdir -p $DOCKER_CONFIG
