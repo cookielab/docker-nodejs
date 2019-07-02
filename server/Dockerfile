@@ -1,6 +1,6 @@
 FROM cookielab/alpine:3.8.0
 
-RUN apk --update --no-cache add nodejs --repository http://dl-cdn.alpinelinux.org/alpine/edge/main
+RUN apk --update --no-cache add nodejs --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/main
 
 USER 1987
 ONBUILD USER root
