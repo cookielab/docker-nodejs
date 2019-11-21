@@ -23,7 +23,7 @@ There is no `latest` tag on this image.
 Note: entrypoint is *not set* to `node` it self but to shell so you don't need to oweride it.
 
 ```
-FROM cookielab/nodejs:12.13.0
+FROM cookielab/nodejs:12.13.1
 
 # ...
 # your commands

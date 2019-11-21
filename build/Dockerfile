@@ -1,4 +1,4 @@
-FROM cookielab/nodejs:server-12.13.0
+FROM cookielab/nodejs:server-12.13.1
 
 RUN apk --update --no-cache add yarn --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN apk --update --no-cache add nodejs-dev nodejs-npm --repository http://dl-cdn.alpinelinux.org/alpine/edge/main
