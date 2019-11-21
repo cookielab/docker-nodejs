@@ -1,7 +1,7 @@
 FROM cookielab/nodejs:build-12.13.0
 
 RUN apk --update --no-cache add fftw-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/main
-RUN apk --update --no-cache add lcms2-dev libpng-dev udev
+RUN apk --update --no-cache add lcms2-dev libpng-dev udev libheif
 RUN apk --update --no-cache add vips-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 USER 1987
