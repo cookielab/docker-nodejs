@@ -1,4 +1,4 @@
-FROM cookielab/nodejs:build-12.14.1
+FROM cookielab/nodejs:build-12.15.0
 
 RUN apk --update --no-cache add fftw-dev vips-dev
 
