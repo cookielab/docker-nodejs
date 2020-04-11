@@ -23,8 +23,6 @@ stages:
       --destination $DOCKER_IMAGE:$DOCKER_IMAGE_TAG_PREFIX$DOCKER_IMAGE_TAG_MINOR \
       --destination $DOCKER_IMAGE:$DOCKER_IMAGE_TAG_PREFIX$DOCKER_IMAGE_TAG_MAJOR \
       --single-snapshot
-  tags:
-    - docker
   only:
     - tags
 
