@@ -13,9 +13,10 @@ stages:
     - export DOCKER_IMAGE_TAG_PATCH=`echo -n $DOCKER_IMAGE_TAG_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2.\3/p'`
     - export DOCKER_IMAGE_TAG_MINOR=`echo -n $DOCKER_IMAGE_TAG_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1.\2/p'`
     - export DOCKER_IMAGE_TAG_MAJOR=`echo -n $DOCKER_IMAGE_TAG_REVISION | sed -n -E 's/([0-9]+)\.([0-9]+)\.([0-9]+)(-([0-9]+))?/\1/p'`
-  script: 
+  script:
     - | 
       /kaniko/executor \
+      --force \
       --context $CI_PROJECT_DIR \
       --dockerfile $DOCKER_FILE_PATH/Dockerfile \
       --destination $DOCKER_IMAGE:$DOCKER_IMAGE_TAG_PREFIX$DOCKER_IMAGE_TAG_REVISION \
